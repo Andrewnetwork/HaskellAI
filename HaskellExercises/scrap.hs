@@ -1,14 +1,10 @@
--- sorting.hs 
--- November 2018 
--- Andrew Ribeiro 
-
--- Reversing a list: 
+-- Reversing a list:
 reverseLs [x] = [x]
 reverseLs (x:xs) = (reverseLs xs)++[x]
--- Examples: 
+-- Examples:
 -- reverseLs [1,2,3]
 -- reverseLs [ [1,2],[3,4],[5,6] ]
--- map reverseLs [ [1,2],[3,4],[5,6] ]  
+-- map reverseLs [ [1,2],[3,4],[5,6] ]
 -- reverseLs (map reverseLs [ [1,2],[3,4],[5,6] ]) == map reverseLs (reverseLs [ [1,2],[3,4],[5,6] ])
 
 rotate' ls = [last ls] ++ reverse( tail (reverse ls) )
@@ -17,7 +13,7 @@ rotate ls n
     | otherwise = rotate (rotate' ls) (n-1)
 -- rotate' [1,2,3]
 -- rotate' (rotate' [1,2,3])
--- rotate' ( rotate' (rotate' [1,2,3]) ) 
+-- rotate' ( rotate' (rotate' [1,2,3]) )
 -- rotate [1,2,3,4] 2
 
 makePairs' :: [Int] -> Int -> [(Int,Int)]
@@ -30,7 +26,7 @@ makePairs ls = makePairs' ls ((length ls)-1)
 
 data OP = E Int Int | L Int Int | G Int Int deriving Show
 
--- Convert list of tuples to list of ordered tuples. 
+-- Convert list of tuples to list of ordered tuples.
 makeOrderedPairs :: [(Int,Int)] -> [OP]
 makeOrderedPairs (x:xs)
     | f < s = [L f s]++makeOrderedPairs xs
@@ -46,7 +42,7 @@ typeSignature (G a b) = "G"
 typeSignature (E a b) = "E"
 
 
--- Types of sorted lists: 
+-- Types of sorted lists:
 -- map typeSignature (makeOrderedPairs (makePairs [1,2,3,4]))
 -- ["L","L","L","G","L","L","G","G","L","G","G","G"]
 
@@ -65,8 +61,8 @@ typeSignature (E a b) = "E"
 -- ["L","L","G","L","G","G"]
 -- ["L","L","L","G","L","L","G","G","L","G","G","G"]
 
--- So we see that a list has a type signature. Sorting a list 
--- reduces to transforming the type of the list to that of a sorted list. 
+-- So we see that a list has a type signature. Sorting a list
+-- reduces to transforming the type of the list to that of a sorted list.
 
 isSorted :: [Int]-> Bool
 isSorted (x:xs)
@@ -94,7 +90,7 @@ pairWiseBoolean ls = (map lte (createPairs ls))
 pwbp ls = zip (pairWiseBoolean ls) (createPairs ls)
 -- pwbp [1,2,4,3]
 
-replaceMap (a,b) = 
+replaceMap (a,b) =
     \x -> if a == x then b else (if b == x then a else x )
 -- (replaceMap (1,2)) 1 -> 2
 -- (replaceMap (1,2)) 2 -> 1
@@ -121,7 +117,7 @@ sortByReplace ls = applyReplaceMaps (replaceMaps ls) ls
 -- sortByReplace (sortByReplace [1,3,4,2])
 -- sortByReplace [4,2,3,1]
 
-sortByReplace' ls 
+sortByReplace' ls
     | isSorted (sortByReplace ls) = [sortByReplace ls]
     | otherwise = [(sortByReplace ls)] ++ sortByReplace' (sortByReplace ls)
 
@@ -130,12 +126,12 @@ sortByReplace' ls
 -- sortByReplace' [6,5,4,3,2,1]
 -- sortByReplace' [6,5,4,3,2,1]
 
--- swapFTuples (pwbp [4,2,3,1]) 
+-- swapFTuples (pwbp [4,2,3,1])
 
 -- applyReplaceMaps' replaceMaps ls = (map replaceMap (swapFTuples (pwbp ls) )) [1,2,4,3]
 
 
--- (replaceMap (1,2)) 1 -> 
+-- (replaceMap (1,2)) 1 ->
 -- map (replaceMap (3,4)) [3,2,2,3]
 -- map (replaceMap (3,4)) (map (replaceMap (3,4)) [3,2,2,3])
 
